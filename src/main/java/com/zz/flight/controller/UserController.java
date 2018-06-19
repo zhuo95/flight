@@ -168,7 +168,7 @@ public class UserController {
     @ResponseBody
     public ServerResponse uploadAvatar(HttpSession session, @RequestParam(value = "upload_file",required = false)MultipartFile multipartFile, HttpServletRequest request){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if(user==null) return ServerResponse.creatByErrorCodeMessage(ResponseCode.NEEDLOG_IN.getCode(),ResponseCode.NEEDLOG_IN.getDesc());
+        //if(user==null) return ServerResponse.creatByErrorCodeMessage(ResponseCode.NEEDLOG_IN.getCode(),ResponseCode.NEEDLOG_IN.getDesc());
         String path = request.getSession().getServletContext().getRealPath("upload");
         //上传
         String targetFileName = fileService.upload(multipartFile,path);
@@ -177,8 +177,10 @@ public class UserController {
         Map fileMap = Maps.newHashMap();
         fileMap.put("uri",targetFileName);
         fileMap.put("url",url);
-        ServerResponse response = userService.updateAvatar(url,user.getId());
-        if(!response.isSuccess()) return response;
+        if(user!=null){
+            ServerResponse response = userService.updateAvatar(url,user.getId());
+            if(!response.isSuccess()) return response;
+        }
         return ServerResponse.creatBySuccess(fileMap);
     }
 

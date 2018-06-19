@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "*",allowCredentials = "true")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {

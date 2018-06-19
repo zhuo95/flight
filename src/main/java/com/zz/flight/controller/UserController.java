@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-@CrossOrigin(origins = "*",allowCredentials = "true")
 @RestController
 @RequestMapping("/user")
 public class UserController {

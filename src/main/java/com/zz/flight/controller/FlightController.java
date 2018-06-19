@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "*",allowCredentials = "true")
 @RestController
 @RequestMapping("/flight")
 public class FlightController {

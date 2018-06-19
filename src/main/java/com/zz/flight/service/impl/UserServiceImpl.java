@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         //status设置
         user.setStatus(Const.Status.USER_VALID);
         //设置默认头像
-        user.setAvatar("http://img.zhuo9529.com/7407b75d-e535-4640-a0c2-0638ac087841.jpg");//青蛙
+        if(StringUtils.isBlank(user.getAvatar())) user.setAvatar("http://img.zhuo9529.com/7407b75d-e535-4640-a0c2-0638ac087841.jpg");//青蛙
         //设置创建时间
         Date now = new Date();
         user.setCreateTime(now);

@@ -38,15 +38,15 @@ public class UserController {
         return userService.addUser(user);
     }
 
-    //注册管理员
-    @PostMapping("/admin")
-    @ResponseBody
-    public ServerResponse addAdmin(String password,String email,String adminToken){
-        if (!adminToken.equals(Const.ADMIN_TOKEN)){
-            return ServerResponse.creatByErrorMessage("密码错误");
-        }
-        return userService.addAdmin(email,password);
-    }
+//    //注册管理员
+//    @PostMapping("/admin")
+//    @ResponseBody
+//    public ServerResponse addAdmin(String password,String email,String adminToken){
+//        if (!adminToken.equals(Const.ADMIN_TOKEN)){
+//            return ServerResponse.creatByErrorMessage("密码错误");
+//        }
+//        return userService.addAdmin(email,password);
+//    }
 
 
     //注册接机人员

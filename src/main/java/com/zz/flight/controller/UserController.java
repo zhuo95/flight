@@ -170,6 +170,13 @@ public class UserController {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         //if(user==null) return ServerResponse.creatByErrorCodeMessage(ResponseCode.NEEDLOG_IN.getCode(),ResponseCode.NEEDLOG_IN.getDesc());
         String path = request.getSession().getServletContext().getRealPath("upload");
+        //验证格式
+        String fileName = multipartFile.getOriginalFilename();
+        if(StringUtils.isBlank(fileName)||fileName.lastIndexOf('.')==-1) return ServerResponse.creatByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        String postfix = fileName.substring(fileName.lastIndexOf('.'),fileName.length()).toLowerCase();
+        if(!StringUtils.equals(postfix,".jpg")&&!StringUtils.equals(postfix,".jpeg")&&!StringUtils.equals(postfix,".png")){
+            return ServerResponse.creatByErrorMessage("upload jpg, jpeg, png");
+        }
         //上传
         String targetFileName = fileService.upload(multipartFile,path);
         String url = PropertyUtil.getProperty("ftp.server.http.prefix")+targetFileName;

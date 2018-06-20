@@ -210,7 +210,8 @@ public class UserServiceImpl implements UserService {
         //发邮件
         String to = user.getEmail();
 
-        String validate = "<h1>请点击下列连接</h1> <p> "+ PropertyUtil.getProperty("email.prefix")+"active?id=" + user.getId()+"&token="+token + "</p>";
+        String validate = "<h1>Please click the url to activate your email:</h1> " +
+                "<p> "+ PropertyUtil.getProperty("email.prefix")+"active?id=" + user.getId()+"&token="+token +  "</p>";
 
         if(!EmailUtil.sendgrid(to,validate)){
             return ServerResponse.creatByErrorMessage("send email error");

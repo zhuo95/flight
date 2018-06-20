@@ -48,7 +48,7 @@ public class EmailUtil {
         Email from = new Email("flight@jing.do");
         String subject = "Please validate your email";
         Email to = new Email(emailTo);
-        Content content = new Content("text/plain", validate);
+        Content content = new Content("text/html", validate);
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid("");

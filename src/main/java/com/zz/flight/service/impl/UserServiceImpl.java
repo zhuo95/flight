@@ -167,6 +167,7 @@ public class UserServiceImpl implements UserService {
                 if(!StringUtils.isBlank(user.getHomeTown())) request.setHomeTown(user.getHomeTown());
                 if(!StringUtils.isBlank(user.getGraduatedFrom())) request.setGraduatedFrom(user.getGraduatedFrom());
             }
+            requestRepository.save(request);
         }
         return ServerResponse.creatBySuccess(savedUser);
     }

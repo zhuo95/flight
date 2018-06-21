@@ -158,18 +158,17 @@ public class UserServiceImpl implements UserService {
         //更新工具 不更新为null的
         UpdateUtil.copyNullProperties(pre,newUser);
         User savedUser = userRepository.save(newUser);
-        savedUser.setPassword(StringUtils.EMPTY);
-        savedUser.setRole(null);
         //如果newuser更新了honetown或者school，用户有已经提交的request，更新request
         if(!StringUtils.isBlank(user.getHomeTown())||!StringUtils.isBlank(user.getGraduatedFrom())){
             Request request = requestRepository.findByRequestUserIdAndStatus(savedUser.getId(),Const.RequestStatus.REQUEST_VALID);
             if(request!=null){
                 if(!StringUtils.isBlank(user.getHomeTown())) request.setHomeTown(user.getHomeTown());
                 if(!StringUtils.isBlank(user.getGraduatedFrom())) request.setGraduatedFrom(user.getGraduatedFrom());
+                requestRepository.save(request);
             }
-            requestRepository.save(request);
         }
-        return ServerResponse.creatBySuccess(savedUser);
+        newUser.setPassword(StringUtils.EMPTY);
+        return ServerResponse.creatBySuccess(newUser);
     }
 
     //save avatar

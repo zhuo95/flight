@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
         //token 放入cache
         TokenCache.setKey(TokenCache.TOKEN_PREFIX+user.getId(),token);
         String to = user.getEmail();
-        String validate = "<h1>请点击下列连接</h1> <p> "+ PropertyUtil.getProperty("email.prefix")+"validation?id="+ user.getId()+ "&token="+token + "</p>";
+        String validate = "<h1>Please click the url to activate your email:</h1> <p> "+ PropertyUtil.getProperty("email.prefix")+"validation?id="+ user.getId()+ "&token="+token + "</p>";
         if(!EmailUtil.sendgrid(to,validate)){
             return ServerResponse.creatByErrorMessage("send email error");
         }
@@ -160,6 +160,14 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(newUser);
         savedUser.setPassword(StringUtils.EMPTY);
         savedUser.setRole(null);
+        //如果newuser更新了honetown或者school，用户有已经提交的request，更新request
+        if(!StringUtils.isBlank(user.getHomeTown())||!StringUtils.isBlank(user.getGraduatedFrom())){
+            Request request = requestRepository.findByRequestUserIdAndStatus(savedUser.getId(),Const.RequestStatus.REQUEST_VALID);
+            if(request!=null){
+                if(!StringUtils.isBlank(user.getHomeTown())) request.setHomeTown(user.getHomeTown());
+                if(!StringUtils.isBlank(user.getGraduatedFrom())) request.setGraduatedFrom(user.getGraduatedFrom());
+            }
+        }
         return ServerResponse.creatBySuccess(savedUser);
     }
 

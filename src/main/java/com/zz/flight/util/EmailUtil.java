@@ -45,7 +45,7 @@ public class EmailUtil {
     }
 
     public static boolean sendgrid(String emailTo , String validate){
-        Email from = new Email("flight@jing.do");
+        Email from = new Email("admin@hellogwu.com");
         String subject = "Please validate your email";
         Email to = new Email(emailTo);
         Content content = new Content("text/html", validate);

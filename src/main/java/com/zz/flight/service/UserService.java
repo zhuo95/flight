@@ -38,4 +38,6 @@ public interface UserService {
     ServerResponse deleteUser(Long id);
 
     ServerResponse validateUser(Long id);
+
+    ServerResponse cancelReceiveEmail(Long userId);
 }

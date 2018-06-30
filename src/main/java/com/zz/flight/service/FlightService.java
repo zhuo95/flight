@@ -22,4 +22,6 @@ public interface FlightService {
     ServerResponse cancelById(Long id,int role,Long userId);
 
     ServerResponse<Request> modifyRequest(Request request,Long userId);
+
+    void emailTask(int hour);
 }

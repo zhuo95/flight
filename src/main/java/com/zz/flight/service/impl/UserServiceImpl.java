@@ -334,4 +334,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return ServerResponse.creatBySuccess("操作成功");
     }
+
+    //取消获取邮件
+    public ServerResponse cancelReceiveEmail(Long userId){
+        User user = userRepository.findById(userId).orElse(null);
+        if(user==null) return ServerResponse.creatByErrorMessage("找不到该用户");
+        user.setReceiveEmail(Const.ReceiveEmail.NOT_RECEIVE_EMAIL);
+        user.setUpdateTime(new Date());
+        userRepository.save(user);
+        return  ServerResponse.creatBySuccessMessage("操作成功");
+    }
 }

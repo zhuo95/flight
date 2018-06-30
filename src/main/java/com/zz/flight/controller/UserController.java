@@ -246,8 +246,19 @@ public class UserController {
     @ResponseBody
     public ServerResponse resetPass(@PathVariable("id")Long id,String newPass,HttpSession session){
         User curUser = (User) session.getAttribute(Const.CURRENT_USER);
-        if(curUser.getId().equals(id)) return ServerResponse.creatByErrorCodeMessage(ResponseCode.NEEDLOG_IN.getCode(),ResponseCode.NEEDLOG_IN.getDesc());
+        if(!curUser.getId().equals(id)) return ServerResponse.creatByErrorCodeMessage(ResponseCode.NEEDLOG_IN.getCode(),ResponseCode.NEEDLOG_IN.getDesc());
         return userService.resetPass(id,newPass);
+    }
+
+    //取消订邮件
+    @PatchMapping("/cancelEmail")
+    @ResponseBody
+    public ServerResponse cancelReceiveEmail(Long userId,HttpSession session){
+        if(userId==null) return ServerResponse.creatByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        User curUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if(curUser==null) return ServerResponse.creatByErrorCodeMessage(ResponseCode.NEEDLOG_IN.getCode(),ResponseCode.NEEDLOG_IN.getDesc());
+        if(!curUser.getId().equals(userId)) return ServerResponse.creatByErrorMessage("无权操作");
+        return userService.cancelReceiveEmail(userId);
     }
 
 }

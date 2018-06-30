@@ -42,4 +42,9 @@ public class Const {
         int GENDER_FEMALE = 0;
         int GENDER_MALE = 1;
     }
+
+    public interface ReceiveEmail{
+        int RECEIVE_EMAIL = 0;
+        int NOT_RECEIVE_EMAIL = 1;
+    }
 }

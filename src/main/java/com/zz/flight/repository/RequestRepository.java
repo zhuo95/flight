@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
+import java.util.List;
 
 
 public interface RequestRepository extends JpaRepository<Request,Long> {
@@ -15,5 +16,7 @@ public interface RequestRepository extends JpaRepository<Request,Long> {
     Request findByRequestUserIdAndStatus(Long id,int status);
 
     Page<Request> findAllByHomeTownLikeAndStatusOrGraduatedFromLikeAndStatus(String homeTown,int status1,String graduatedFrom,int status2,Pageable pageable);
+
+    List<Request>  findAllByCreateTimeAfterAndStatus(Date date,int status);
 
 }

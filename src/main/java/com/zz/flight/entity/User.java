@@ -36,16 +36,19 @@ public class User {
 
     private Integer role;
 
+    private Integer receiveEmail;
+
     private Date createTime;
 
     private Date updateTime;
 
     public User(){}
 
-    public User(String major,String wechat,String actualName,String avatar,Integer status,String homeTown,String graduatedFrom,Long id,Integer gender ,String email,Integer emailChecked ,String password,Integer role, Date createTime, Date updateTime){
+    public User(String major,String wechat,Integer receiveEmail,String actualName,String avatar,Integer status,String homeTown,String graduatedFrom,Long id,Integer gender ,String email,Integer emailChecked ,String password,Integer role, Date createTime, Date updateTime){
         this.id = id;
         this.avatar = avatar;
         this.actualName = actualName;
+        this.receiveEmail = receiveEmail;
         this.homeTown = homeTown;
         this.graduatedFrom = graduatedFrom;
         this.status = status;
@@ -179,5 +182,13 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Integer getReceiveEmail() {
+        return receiveEmail;
+    }
+
+    public void setReceiveEmail(Integer receiveEmail) {
+        this.receiveEmail = receiveEmail;
     }
 }

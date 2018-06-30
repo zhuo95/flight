@@ -5,11 +5,15 @@ import com.zz.flight.common.ResponseCode;
 import com.zz.flight.common.ServerResponse;
 import com.zz.flight.entity.Interest;
 import com.zz.flight.entity.Request;
+import com.zz.flight.entity.User;
 import com.zz.flight.repository.InterestRepository;
 import com.zz.flight.repository.RequestRepository;
 import com.zz.flight.repository.UserRepository;
 import com.zz.flight.service.FlightService;
+import com.zz.flight.util.EmailUtil;
+import com.zz.flight.util.PropertyUtil;
 import com.zz.flight.util.UpdateUtil;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service("FlightService")
 public class FlightServiceImlp implements FlightService {
@@ -132,6 +137,13 @@ public class FlightServiceImlp implements FlightService {
         interest.setCreateTime(now);
         interest.setUpdateTime(now);
         interestRepository.save(interest);
+        //发邮件
+        User user = userRepository.findById(request.getRequestUserId()).orElse(null);
+        if(user!=null){
+            String to = user.getEmail();
+            String validate = "<h2>Someone want to help you, click to see : </h2> <p> "+ "https://flight.foggystudio.com/ </p>";
+            EmailUtil.sendgrid(to,validate);
+        }
         return ServerResponse.creatBySuccess("success");
     }
 
@@ -189,5 +201,25 @@ public class FlightServiceImlp implements FlightService {
         UpdateUtil.copyNullProperties(preRequest,request);
         Request newRequest = requestRepository.save(request);
         return ServerResponse.creatBySuccess(newRequest);
+    }
+
+    //定时发邮件
+    public void emailTask(int hour){
+
+        Date time = DateUtils.addHours(new Date(),-hour);
+        List<Request> requests =  requestRepository.findAllByCreateTimeAfterAndStatus(time ,Const.RequestStatus.REQUEST_VALID);
+
+        if(requests!=null&&requests.size()!=0){
+            List<User> users = userRepository.findAllByRole(Const.Role.ROLE_V0LUNTEER);
+
+            for(User user : users){
+                    if(user.getReceiveEmail()==null||user.getReceiveEmail()==Const.ReceiveEmail.RECEIVE_EMAIL){
+                        String to = user.getEmail();
+                        String validate = "<h2>Hello，有新的小伙伴申请接机了！</h2> <p> 点击查看:https://flight.foggystudio.com/ </p> <p>如果您不想收到该邮件,请点击取消:https://flight.foggystudio.com/cancel?id="+user.getId()+ " </p>";
+                        EmailUtil.sendgrid(to,validate);
+                    }
+            }
+        }
+
     }
 }
